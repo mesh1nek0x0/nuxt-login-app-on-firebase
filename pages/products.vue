@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import firebase from "@/plugins/firebase";
 export default {
   asyncData() {
     return {
@@ -23,20 +24,16 @@ export default {
     };
   },
   mounted: function() {
-    this.products = [
-      {
-        id: "productId1",
-        name: "product1",
-        price: 2000,
-        description: "this is product 1"
-      },
-      {
-        id: "productId2",
-        name: "product2",
-        price: 3000,
-        description: "this is product 2"
-      }
-    ];
+    const db = firebase.firestore();
+    db.collection("products")
+      .get()
+      .then(snapshot => {
+        let data = [];
+        snapshot.forEach(doc => {
+          data.push(doc.data());
+        });
+        this.products = data;
+      });
   }
 };
 </script>
