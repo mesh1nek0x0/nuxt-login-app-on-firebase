@@ -45,11 +45,6 @@ export default {
         this.description = data.description
         this.price = data.price
       })
-  },
-  methods: {
-      handleSubmit(event) {
-          alert(`${this.id} is updated`);
-      }
   }
 };
 </script>
