@@ -8,7 +8,13 @@
         <p>{{ product.description }}</p>
       </li>
     </ul>
+    <hr />
+    <div>
+      <p>add some one?</p>
+      <nuxt-link to="/products/add">ADD PRODUCT</nuxt-link>
+    </div>
   </div>
+  
 </template>
 
 <script>
