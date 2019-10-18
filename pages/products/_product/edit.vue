@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>pages/products/_product</h1>
+        <h1>pages/products/_product/edit</h1>
         <h2>ID: {{id}}</h2>
         <nuxt-link v-bind:to="{name:'products-product',params:{product: id}}">GO BACK VIEW</nuxt-link>
         <form @submit.prevent="handleSubmit">
