@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>pages/products/_product</h1>
+        <h1>pages/products/_product/edit</h1>
         <h2>ID: {{id}}</h2>
         <nuxt-link v-bind:to="{name:'products-product',params:{product: id}}">GO BACK VIEW</nuxt-link>
         <form @submit.prevent="handleSubmit">
@@ -22,8 +22,20 @@
         </form>
         <hr />
         <nuxt-link to="/products">GO BACK TO PRODUCT LIST</nuxt-link>
+        <hr />
+        <div class="danger">
+          <p>DANGER</p>
+        <button @click="handleDelete">DELETE</button>
+        </div>
     </div>
 </template>
+
+<style scoped>
+.danger {
+  color: red;
+  float: right;
+}
+</style>
 
 <script>
 import firebase from "@/plugins/firebase";
@@ -50,7 +62,23 @@ export default {
   },
   methods: {
       handleSubmit(event) {
+        const db = firebase.firestore();
+        db.collection("products").doc(this.id)
+        .set({
+          name: this.name,
+          description: this.description,
+          price: this.price
+        })
+        .then(() => {
           alert(`${this.id} is updated`);
+        })
+      },
+      handleDelete(event) {
+        const db = firebase.firestore();
+        db.collection("products").doc(this.id).delete().then(() => {
+          alert(`${this.id} has been deleted`)
+          this.$router.push("/products")
+        })
       }
   }
 };
