@@ -1,32 +1,13 @@
 <template>
   <div>
     <h1>pages/other-counter</h1>
-    <p>CURRENT: {{ counter }}</p>
-    <button type="submit" @click="handleIncrement">INC</button>
-    <button type="submit" @click="handleDecrement">DEC</button>
+
+    <p>CURRENT: {{ $store.state.num }}</p>
+    <button type="submit" @click="$store.dispatch('increment')">INC</button>
+    <button type="submit" @click="$store.dispatch('decrement')">DEC</button>
     <hr />
-    <button type="submit" @click="handleReset">RESET</button>
+    <button type="submit" @click="$store.dispatch('reset')">RESET</button>
+    <hr />
     <nuxt-link to="/counter">GO TO OTHERS</nuxt-link>
   </div>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-      counter: 0
-    };
-  },
-  methods: {
-    handleIncrement(event) {
-      this.counter++;
-    },
-    handleDecrement(event) {
-      this.counter--;
-    },
-    handleReset(event) {
-      this.counter = 0;
-    }
-  }
-};
-</script>
