@@ -21,6 +21,9 @@
 <script>
 export default {
   async asyncData({ store }) {
+    if (store.state.product.products.length) {
+      return;
+    }
     await store.dispatch("product/fetchProducts");
   }
 };
