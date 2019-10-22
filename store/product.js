@@ -1,5 +1,7 @@
+import firebase from "@/plugins/firebase";
+
 export const state = () => ({
-  products: [{ id: 0, name: "daummy", price: 2000, description: "desc" }]
+  products: []
 });
 
 export const mutations = {
@@ -9,9 +11,18 @@ export const mutations = {
 };
 
 export const actions = {
-  fetchProducts({ commit }) {
-    commit("setProducts", [
-      { id: 1, name: "aaa", price: 2000, description: "desc" }
-    ]);
+  async fetchProducts({ commit }) {
+    const db = firebase.firestore();
+    const data = await db
+      .collection("products")
+      .get()
+      .then(snapshot => {
+        let data = [];
+        snapshot.forEach(doc => {
+          data.push({ id: doc.id, ...doc.data() });
+        });
+        return data;
+      });
+    commit("setProducts", data);
   }
 };
