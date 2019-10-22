@@ -7,6 +7,9 @@ export const state = () => ({
 export const mutations = {
   setProducts(state, products) {
     state.products = products;
+  },
+  addProduct(state, product) {
+    state.products = Object.assign(product, state.products);
   }
 };
 
@@ -24,5 +27,14 @@ export const actions = {
         return data;
       });
     commit("setProducts", data);
+  },
+  async addProducts({ commit }, { product }) {
+    const db = firebase.firestore();
+    await db.collection("products").add({
+      name: product.name,
+      description: product.description,
+      price: product.price
+    });
+    commit("addProduct", product);
   }
 };

@@ -36,19 +36,18 @@ export default {
   },
 
   methods: {
-      handleSubmit(event) {
-        const db = firebase.firestore();
-        db.collection("products").add({
+    async handleSubmit(event) {
+      await this.$store.dispatch("product/addProducts", {
+        product: {
           name: this.name,
           description: this.description,
           price: this.price
-        })
-        .then(() => {
+        }
+      });
           alert(`${this.name} is added`);
-          this.name = ""
-          this.description = ""
-          this.price = ""
-        })
+      this.name = "";
+      this.description = "";
+      this.price = "";
       }
   }
 };
