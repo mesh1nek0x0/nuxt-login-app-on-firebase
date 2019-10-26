@@ -1,27 +1,27 @@
 <template>
-    <div>
-        <h1>pages/products/add</h1>
-        <h2>ADD PRODUCT</h2>
-        <form @submit.prevent="handleSubmit">
-            <ul>
-                <li>
-                    <p>NAME</p>
-                    <input v-model="name" placeholder="input product name"/>
-                </li>
-                <li>
-                    <p>DESCRIPTION</p>
-                    <textarea v-model="description" placeholder="input product description"/>
-                </li>
-                <li>
-                    <p>PRICE</p>
-                    <input v-model="price" placeholder="input product price"/>
-                </li>
-            </ul>
-            <button type="submit">ADD</button>
-        </form>
-        <hr />
-        <nuxt-link to="/products">GO BACK TO PRODUCT LIST</nuxt-link>
-    </div>
+  <div>
+    <h1>pages/products/add</h1>
+    <h2>ADD PRODUCT</h2>
+    <form @submit.prevent="handleSubmit">
+      <ul>
+        <li>
+          <p>NAME</p>
+          <input v-model="name" placeholder="input product name" />
+        </li>
+        <li>
+          <p>DESCRIPTION</p>
+          <textarea v-model="description" placeholder="input product description" />
+        </li>
+        <li>
+          <p>PRICE</p>
+          <input v-model="price" placeholder="input product price" />
+        </li>
+      </ul>
+      <button type="submit">ADD</button>
+    </form>
+    <hr />
+    <nuxt-link to="/products">GO BACK TO PRODUCT LIST</nuxt-link>
+  </div>
 </template>
 
 <script>
@@ -36,20 +36,19 @@ export default {
   },
 
   methods: {
-      handleSubmit(event) {
-        const db = firebase.firestore();
-        db.collection("products").add({
+    async handleSubmit(event) {
+      await this.$store.dispatch("product/addProducts", {
+        product: {
           name: this.name,
           description: this.description,
           price: this.price
-        })
-        .then(() => {
-          alert(`${this.name} is added`);
-          this.name = ""
-          this.description = ""
-          this.price = ""
-        })
-      }
+        }
+      });
+      alert(`${this.name} is added`);
+      this.name = "";
+      this.description = "";
+      this.price = "";
+    }
   }
 };
 </script>
