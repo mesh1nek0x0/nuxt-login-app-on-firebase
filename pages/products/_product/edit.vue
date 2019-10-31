@@ -40,46 +40,31 @@
 <script>
 import firebase from "@/plugins/firebase";
 export default {
-  asyncData() {
+  async asyncData({store}) {
     return {
-      id: "loading...",
-      name: "loading...",
-      description: "loading...",
-      price: "loading..."
+      id: "",
+      name: "",
+      description: "",
+      price: ""
     };
   },
-  mounted: function() {
-    const db = firebase.firestore();
-    db.collection("products").doc(this.$route.params.product)
-      .get()
-      .then(snapshot => {
-        let data = snapshot.data();
-        this.id = snapshot.id
-        this.name = data.name
-        this.description = data.description
-        this.price = data.price
-      })
-  },
   methods: {
-      handleSubmit(event) {
-        const db = firebase.firestore();
-        db.collection("products").doc(this.id)
-        .set({
+    async handleSubmit(e) {
+      await this.$store.dispatch('product/updateProduct', {
+        id: this.$route.params.product,
+        data: {
           name: this.name,
           description: this.description,
           price: this.price
-        })
-        .then(() => {
-          alert(`${this.id} is updated`);
-        })
-      },
-      handleDelete(event) {
-        const db = firebase.firestore();
-        db.collection("products").doc(this.id).delete().then(() => {
-          alert(`${this.id} has been deleted`)
-          this.$router.push("/products")
-        })
-      }
+        }
+      })
+      alert(`${this.id} is updated`);
+    },
+    async handleDelete(e) {
+      await this.$store.dispatch('product/deleteProduct', this.$route.params.product)
+      alert(`${this.id} has been deleted`)
+      this.$router.push("/products")
+    }
   }
 };
 </script>
