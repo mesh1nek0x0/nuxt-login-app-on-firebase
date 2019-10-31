@@ -9,7 +9,14 @@ export const mutations = {
     state.products = products;
   },
   addProduct(state, product) {
-    state.products = Object.assign(product, state.products);
+    // state.products = Object.assign(product, state.products);
+    state.products.push(product)
+  },
+  updateProduct(state, oldProduct, product) {
+      Object.assign(oldProduct, product)
+  },
+  deleteProduct(state, index) {
+      state.products.splice(index, 1)
   }
 };
 
@@ -36,5 +43,23 @@ export const actions = {
       price: product.price
     });
     commit("addProduct", product);
+  },
+  async updateProduct({ state, commit }, product) {
+    const db = firebase.firestore()
+    await db.collection("products")
+        .doc(product.id)
+        .set(product.data)
+    const oldProduct = state.products.find(val => {
+        return val.id === product.id
+    })
+    commit('updateProduct', oldProduct, product.data)
+  },
+  async deleteProduct({ state, commit }, id) {
+    const db = firebase.firestore()
+    await db.collection("products")
+        .doc(id)
+        .delete()
+    const index = state.products.indexOf(id)
+    commit('deleteProduct', index)
   }
 };
